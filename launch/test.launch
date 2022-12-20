@@ -1,0 +1,16 @@
+<launch>
+    <arg name="host_value" default=""/>
+    <arg name="port_value" default=""/>
+
+    <node pkg="robot_tester" name="robot_tester_1" type="rabbitmq_consumer.py" output="screen">
+        <param name="host" value="$(arg host_value)"/>
+        <param name="port" value="$(arg port_value)"/>
+    </node>
+
+    <node pkg="robot_tester" name="robot_tester_2" type="heartbeat_publisher.py" output="screen">
+        <param name="host" value="$(arg host_value)"/>
+        <param name="port" value="$(arg port_value)"/>
+    </node>
+    
+
+</launch>
