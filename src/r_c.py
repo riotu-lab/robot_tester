@@ -10,21 +10,21 @@ from geometry_msgs.msg import Twist
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
 
-class RabbitmqConsumer(threading.Thread):
+class RC(threading.Thread):
     def __init__(self, host, port, *args, **kwargs):
-        super(RabbitmqConsumer, self).__init__(*args, **kwargs)
+        super(RC, self).__init__(*args, **kwargs)
 
         self._host = host
         self._port = port
 
-        cmd_vel_topic = "/cmd_vel"
-        self.velocity_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
-        position_topic = "/amcl_pose"
-        self.pose_subscriber = rospy.Subscriber(
-            position_topic, PoseWithCovarianceStamped, self.poseCallback
+        c_v_t = "/cmd_vel"
+        self.v_p = rospy.Publisher(c_v_t, Twist, queue_size=10)
+        po_t = "/amcl_pose"
+        self.po_su = rospy.Subscriber(
+            po_t, PoseWithCovarianceStamped, self.poCallback
         )
 
-    def poseCallback(self, pose_message):
+    def poCallback(self, pose_message):
         # print("pose_message: ", pose_message)
         global x
         global y
@@ -47,7 +47,7 @@ class RabbitmqConsumer(threading.Thread):
 
         while True:
             rospy.loginfo("Turtlesim moves forwards")
-            self.velocity_publisher.publish(velocity_message)
+            self.v_p.publish(velocity_message)
 
             loop_rate.sleep()
 
@@ -63,7 +63,7 @@ class RabbitmqConsumer(threading.Thread):
 
         # finally, stop the robot when the distance is moved
         velocity_message.linear.x = 0
-        self.velocity_publisher.publish(velocity_message)
+        self.v_p.publish(velocity_message)
 
     # Not necessarily a method.
     def callback_func(self, channel, method, properties, body):
@@ -110,9 +110,9 @@ class RabbitmqConsumer(threading.Thread):
 
 
 if __name__ == "__main__":
-    rospy.init_node("RabbitmqConsumer", anonymous=True)
+    rospy.init_node("RC", anonymous=True)
     host = rospy.get_param("~host", "localhost")
     port = rospy.get_param("~port", 5762)
-    thread = RabbitmqConsumer(host=host, port=port)
+    thread = RC(host=host, port=port)
     # thread.daemon = True
     thread.start()
