@@ -30,7 +30,7 @@ class HeartbeatPublisher:
             routing_key=routing_key,
             body=json.dumps(message),
         )
-        print(" [x] Sent message %r for %r" % (message, routing_key))
+        # print(" [x] Sent message %r for %r" % (message, routing_key))
 
     def create_connection(self):
         credentials = pika.PlainCredentials(

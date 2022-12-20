@@ -25,7 +25,7 @@ class RabbitmqConsumer(threading.Thread):
         )
 
     def poseCallback(self, pose_message):
-        print("pose_message: ", pose_message)
+        # print("pose_message: ", pose_message)
         global x
         global y
         x = pose_message.pose.pose.position.x
