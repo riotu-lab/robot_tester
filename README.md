@@ -3,7 +3,7 @@
 first you clone the ros package inside "catkin_ws/src"
 
 ```bash
-git clone
+git clone https://github.com/riotu-lab/robot_tester.git
 ```
 Then you need to compile
 
