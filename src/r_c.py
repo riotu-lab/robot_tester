@@ -46,7 +46,6 @@ class RC(threading.Thread):
         )  # we publish the velocity at 10 Hz (10 times a second)
 
         while True:
-            rospy.loginfo("Turtlesim moves forwards")
             self.v_p.publish(velocity_message)
 
             loop_rate.sleep()
